@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Madame Glamour Fios | Loja Online</title>
+  <meta name="description" content="Madame Glamour Fios — cabelos, fibras, orgânicos, tranças, apliques e acessórios.">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+  <div class="topbar">✨ PAGAMENTO VIA PIX COM 5% DE DESCONTO • ENVIO PARA TODO O BRASIL</div>
+
+  <header class="header">
+    <div class="logo">MADAME<br><span>GLAMOUR FIOS</span></div>
+    <nav>
+      <a href="#inicio">Início</a>
+      <a href="#categorias">Categorias</a>
+      <a href="#produtos">Produtos</a>
+      <a href="#ofertas">Ofertas</a>
+      <a href="#contato">Contato</a>
+    </nav>
+    <div class="actions">
+      <button aria-label="Pesquisar" onclick="focusSearch()">⌕</button>
+      <button aria-label="Carrinho" onclick="openCart()">🛍 <b id="cartCount">0</b></button>
+    </div>
+  </header>
+
+  <main id="inicio">
+    <section class="hero">
+      <div class="hero-copy">
+        <small>BELEZA • QUALIDADE • CONFIANÇA</small>
+        <h1>Fios que realçam<br><strong>sua beleza.</strong></h1>
+        <p>Cabelos, fibras, orgânicos, tranças, apliques e acessórios para você criar o visual que ama.</p>
+        <div class="hero-buttons">
+          <a class="btn gold" href="#produtos">COMPRAR AGORA</a>
+          <a class="btn outline" target="_blank" href="https://wa.me/5524998755597?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Madame%20Glamour%20Fios.">FALAR NO WHATSAPP</a>
+        </div>
+      </div>
+      <div class="hero-art">
+        <div class="model model1"></div><div class="model model2"></div><div class="model model3"></div>
+      </div>
+    </section>
+
+    <section class="trust">
+      <div>🚚 <b>Envio nacional</b><span>Para todo o Brasil</span></div>
+      <div>💳 <b>Parcelamento</b><span>Consulte as opções</span></div>
+      <div>💬 <b>Atendimento</b><span>Direto no WhatsApp</span></div>
+      <div>🔒 <b>Compra segura</b><span>Checkout protegido</span></div>
+    </section>
+
+    <section id="categorias" class="section dark">
+      <div class="section-title light"><span>—</span> COMPRE POR CATEGORIA <span>—</span></div>
+      <div class="categories">
+        <a href="#produtos"><div class="cat">BIO FIBRA</div></a>
+        <a href="#produtos"><div class="cat">ORGÂNICOS</div></a>
+        <a href="#produtos"><div class="cat">TRANÇAS</div></a>
+        <a href="#produtos"><div class="cat">RABO DE CAVALO</div></a>
+      </div>
+    </section>
+
+    <section id="produtos" class="section">
+      <div class="section-title"><span>—</span> MAIS VENDIDOS <span>—</span></div>
+      <div class="search-row">
+        <input id="search" oninput="renderProducts()" placeholder="Pesquisar produto...">
+        <select id="sort" onchange="renderProducts()"><option value="relevance">Mais relevantes</option><option value="low">Menor preço</option><option value="high">Maior preço</option></select>
+      </div>
+      <div id="productGrid" class="products"></div>
+    </section>
+
+    <section id="ofertas" class="promo">
+      <div>
+        <small>OFERTAS DA MADAME</small>
+        <h2>Seu próximo visual começa aqui.</h2>
+        <p>Use o PIX e aproveite 5% de desconto no pedido.</p>
+      </div>
+      <a class="btn gold" href="#produtos">VER OFERTAS</a>
+    </section>
+
+    <section class="section content-grid">
+      <div class="content-card">
+        <h2>Madame Glamour Fios</h2>
+        <p>Uma loja pensada para quem ama transformar o visual com fios, fibras e acessórios de qualidade.</p>
+        <ul><li>Curadoria de produtos</li><li>Atendimento humanizado</li><li>Envio para todo o Brasil</li></ul>
+      </div>
+      <div class="content-card instagram">
+        <h2>✨ Siga a Madame Glamour</h2>
+        <p>Mostre seu estilo, acompanhe novidades e veja inspirações de cabelos.</p>
+        <a class="btn black" href="#" onclick="alert('Adicione aqui o Instagram oficial da loja.');return false;">VER INSTAGRAM</a>
+      </div>
+    </section>
+  </main>
+
+  <footer id="contato">
+    <div><h3>MADAME GLAMOUR FIOS</h3><p>Fios luxuosos para uma mulher sofisticada e poderosa.</p></div>
+    <div><h3>ATENDIMENTO</h3><a target="_blank" href="https://wa.me/5524998755597">WhatsApp da loja</a><p>+55 24 99875-5597</p></div>
+    <div><h3>COMPRE TAMBÉM</h3><a target="_blank" href="https://shopee.com.br/hevynnin#product_list">Nossa loja na Shopee</a></div>
+    <div><h3>PAGAMENTO</h3><p>PIX • Cartão • outras opções no checkout</p></div>
+    <div class="copyright">© 2026 Madame Glamour Fios • Todos os direitos reservados.</div>
+  </footer>
+
+  <a class="float whatsapp" target="_blank" href="https://wa.me/5524998755597?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Madame%20Glamour%20Fios.">☘</a>
+  <a class="float shopee" target="_blank" href="https://shopee.com.br/hevynnin#product_list">S</a>
+
+  <div id="cartOverlay" class="overlay" onclick="if(event.target===this)closeCart()">
+    <aside class="drawer">
+      <button class="close" onclick="closeCart()">×</button>
+      <h2>Seu carrinho</h2>
+      <div id="cartItems"></div>
+      <div class="cart-total"><span>Total</span><strong id="cartTotal">R$ 0,00</strong></div>
+      <button class="btn gold full" onclick="openCheckout()">FINALIZAR COMPRA</button>
+      <a class="btn whatsapp-btn full" target="_blank" href="https://wa.me/5524998755597?text=Ol%C3%A1%2C%20quero%20ajuda%20com%20meu%20pedido.">COMPRAR/ATENDER PELO WHATSAPP</a>
+    </aside>
+  </div>
+
+  <div id="checkoutOverlay" class="overlay" onclick="if(event.target===this)closeCheckout()">
+    <aside class="checkout">
+      <button class="close" onclick="closeCheckout()">×</button>
+      <h2>Finalizar pedido</h2>
+      <div id="checkoutSummary"></div>
+      <label>Nome<input id="name" placeholder="Seu nome"></label>
+      <label>WhatsApp<input id="customerPhone" placeholder="(00) 00000-0000"></label>
+      <label>CEP<input id="cep" placeholder="00000-000"></label>
+      <label>Forma de pagamento
+        <select id="payment" onchange="togglePix()"><option value="pix">PIX — 5% de desconto</option><option value="whatsapp">Finalizar pelo WhatsApp</option><option value="shopee">Comprar pela Shopee</option></select>
+      </label>
+      <div id="pixBox" class="pix-box">
+        <p><b>PIX da Madame Glamour Fios</b></p>
+        <p>Chave: <span id="pixKey">+55 24 99875-5597</span></p>
+        <div id="qrcode"></div>
+        <div id="pixStatus" class="pix-status">Gerando cobrança…</div>
+        <textarea id="pixPayload" readonly></textarea>
+        <button class="btn black full" onclick="copyPix()">COPIAR PIX COPIA E COLA</button>
+        <small>O pagamento é criado pelo gateway e a confirmação chega automaticamente por webhook. Não envie senha ou token do banco pelo navegador.</small>
+      </div>
+      <button id="finishBtn" class="btn gold full" onclick="finishOrder()">GERAR PEDIDO</button>
+    </aside>
+  </div>
+
+<script>
+const WHATSAPP = "5524998755597";
+const SHOPEE = "https://shopee.com.br/hevynnin#product_list";
+
+const products = [
+ {id:1,name:"Jumbox GH 400g",price:28.41,img:"assets/jumbox-gh.png",tag:"MAIS VENDIDO"},
+ {id:2,name:"French Curl Cherey 400gr",price:41.71,img:"assets/french-curl.png",old:59.90,tag:"27% OFF"},
+ {id:3,name:"Maya Bio Orgânica Cherey",price:66.41,img:"assets/maya-bio.png",tag:"BIO ORGÂNICA"},
+ {id:4,name:"Nina Pacotão 360gr",price:85.41,img:"assets/nina-pacotao.png",tag:"DESTAQUE"},
+ {id:5,name:"Rabo de Cavalo — Fio Premium",price:69.90,img:"assets/maya-bio.png",tag:"NOVO"},
+ {id:6,name:"Trança Sintética — Fashion Line",price:39.90,img:"assets/french-curl.png",tag:"OFERTA"}
+];
+let cart = JSON.parse(localStorage.getItem("mgf_cart") || "[]");
+
+const money = n => n.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+function renderProducts(){
+ const q=(document.getElementById("search").value||"").toLowerCase();
+ let list=products.filter(p=>p.name.toLowerCase().includes(q));
+ const s=document.getElementById("sort").value;
+ if(s==="low") list.sort((a,b)=>a.price-b.price);
+ if(s==="high") list.sort((a,b)=>b.price-a.price);
+ document.getElementById("productGrid").innerHTML=list.map(p=>`
+  <article class="product">
+   <div class="product-img"><img src="${p.img}" alt="${p.name}"><span>${p.tag||""}</span></div>
+   <div class="product-info"><h3>${p.name}</h3>
+   ${p.old?`<del>${money(p.old)}</del>`:""}
+   <strong>${money(p.price)}</strong>
+   <small>à vista no PIX • 3x de ${money(p.price/3)} sem juros</small>
+   <button class="btn black full" onclick="addToCart(${p.id})">ADICIONAR AO CARRINHO</button>
+   </div>
+  </article>`).join("");
+}
+function save(){localStorage.setItem("mgf_cart",JSON.stringify(cart));}
+function addToCart(id){const item=cart.find(x=>x.id===id); if(item)item.qty++; else cart.push({id,qty:1}); save(); updateCart(); openCart();}
+function updateCart(){document.getElementById("cartCount").textContent=cart.reduce((s,x)=>s+x.qty,0);}
+function openCart(){
+ document.getElementById("cartOverlay").classList.add("show");
+ const box=document.getElementById("cartItems");
+ if(!cart.length) box.innerHTML="<p>Seu carrinho está vazio.</p>";
+ else box.innerHTML=cart.map(x=>{const p=products.find(y=>y.id===x.id);return `<div class="cart-item"><img src="${p.img}"><div><b>${p.name}</b><p>${money(p.price)} × ${x.qty}</p><div><button onclick="changeQty(${p.id},-1)">−</button> <button onclick="changeQty(${p.id},1)">+</button> <button onclick="removeItem(${p.id})">remover</button></div></div></div>`}).join("");
+ document.getElementById("cartTotal").textContent=money(total());
+}
+function closeCart(){document.getElementById("cartOverlay").classList.remove("show");}
+function changeQty(id,d){const x=cart.find(i=>i.id===id); if(!x)return; x.qty+=d; if(x.qty<=0)cart=cart.filter(i=>i.id!==id); save(); updateCart(); openCart();}
+function removeItem(id){cart=cart.filter(i=>i.id!==id);save();updateCart();openCart();}
+function total(){return cart.reduce((s,x)=>s+products.find(p=>p.id===x.id).price*x.qty,0);}
+function openCheckout(){
+ if(!cart.length){alert("Adicione pelo menos um produto.");return;}
+ closeCart(); document.getElementById("checkoutOverlay").classList.add("show");
+ const discount=total()*0.05, final=total()-discount;
+ document.getElementById("checkoutSummary").innerHTML=`<div class="summary"><span>Subtotal</span><b>${money(total())}</b><span>Desconto PIX</span><b>- ${money(discount)}</b><strong>Total no PIX</strong><strong>${money(final)}</strong></div>`;
+ buildPix(final);
+}
+function closeCheckout(){document.getElementById("checkoutOverlay").classList.remove("show");}
+function togglePix(){
+ const v=document.getElementById("payment").value;
+ document.getElementById("pixBox").style.display=v==="pix"?"block":"none";
+}
+function crc16(payload){
+ let crc=0xFFFF;
+ for(let i=0;i<payload.length;i++){crc^=payload.charCodeAt(i)<<8;for(let j=0;j<8;j++)crc=(crc&0x8000)?((crc<<1)^0x1021)&0xFFFF:(crc<<1)&0xFFFF;}
+ return crc.toString(16).toUpperCase().padStart(4,"0");
+}
+function field(id,val){return id+String(val.length).padStart(2,"0")+val;}
+async function buildPix(amount){
+  const name = document.getElementById("name").value || "Cliente";
+  const email = "cliente@exemplo.com";
+  const order = await fetch("/api/pix/create", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({
+      amount: Number(amount.toFixed(2)),
+      description:"Pedido Madame Glamour Fios",
+      customerName:name,
+      customerEmail:email,
+      items: cart.map(x => {
+        const p=products.find(y=>y.id===x.id);
+        return {id:p.id,name:p.name,quantity:x.qty,unitPrice:p.price};
+      })
+    })
+  });
+  if(!order.ok){
+    const err=await order.json().catch(()=>({error:"Erro ao criar cobrança"}));
+    alert(err.error || "Não foi possível gerar o PIX. Configure o servidor e as credenciais do gateway.");
+    return;
+  }
+  const data=await order.json();
+  document.getElementById("pixPayload").value=data.qr_code || "";
+  const qr=document.getElementById("qrcode"); qr.innerHTML="";
+  if(data.qr_code_base64){
+    const img=document.createElement("img");
+    img.src="data:image/png;base64,"+data.qr_code_base64;
+    img.width=190; img.height=190;
+    qr.appendChild(img);
+  }
+  document.getElementById("pixBox").dataset.orderId=data.orderId;
+  document.getElementById("pixBox").dataset.status="pending";
+  document.getElementById("pixStatus").textContent="Aguardando pagamento…";
+  pollPayment(data.orderId);
+}
+async function pollPayment(orderId){
+  clearTimeout(window.pixPoll);
+  const check = async ()=>{
+    try{
+      const r=await fetch("/api/orders/"+encodeURIComponent(orderId));
+      if(!r.ok) return;
+      const d=await r.json();
+      const el=document.getElementById("pixStatus");
+      if(d.status==="approved"){
+        el.textContent="✓ PIX confirmado! Pedido aprovado.";
+        el.className="paid";
+        document.getElementById("finishBtn").textContent="PEDIDO APROVADO";
+        document.getElementById("finishBtn").disabled=true;
+        return;
+      }
+      if(d.status==="cancelled" || d.status==="rejected"){
+        el.textContent="Pagamento não aprovado.";
+        return;
+      }
+      el.textContent="Aguardando pagamento…";
+      window.pixPoll=setTimeout(check,4000);
+    }catch(e){ window.pixPoll=setTimeout(check,5000); }
+  };
+  check();
+}
+function finishOrder(){
+ const payment=document.getElementById("payment").value;
+ const name=document.getElementById("name").value||"Cliente";
+ const items=cart.map(x=>{const p=products.find(y=>y.id===x.id);return `${x.qty}x ${p.name}`}).join(", ");
+ if(payment==="shopee"){window.open(SHOPEE,"_blank");return;}
+ if(payment==="whatsapp"){
+  const msg=`Olá! Sou ${name}. Quero finalizar meu pedido na Madame Glamour Fios. Produtos: ${items}. Total: ${money(total())}.`;
+  window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`,"_blank");return;
+ }
+ alert("Pedido preparado! Faça o pagamento pelo QR Code ou PIX Copia e Cola e envie o comprovante pelo WhatsApp.");
+}
+function focusSearch(){document.getElementById("search").focus();document.getElementById("search").scrollIntoView({behavior:"smooth",block:"center"});}
+renderProducts();updateCart();
+</script>
+</body>
+</html>
