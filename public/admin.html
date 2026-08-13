@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Painel | Madame Glamour Fios</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#f5f3ef;color:#171717;font-family:Arial,sans-serif}
+.top{background:#111;color:#fff;padding:18px 5%;display:flex;justify-content:space-between;align-items:center}
+.brand{color:#e4b51c;font-family:Georgia,serif;font-size:21px;font-weight:bold}.sub{color:#bbb;font-size:12px;margin-top:4px}
+main{padding:35px 5%;max-width:1400px;margin:auto}.login{background:#fff;padding:25px;border-radius:10px;box-shadow:0 5px 20px #00000012;margin-bottom:25px}
+input,select,button{padding:11px;border:1px solid #ddd;border-radius:6px}input{width:320px;max-width:100%}button{cursor:pointer;font-weight:700;background:#111;color:#fff}
+button.gold{background:#dcae18;color:#111}.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:15px;margin:20px 0}.card{background:#fff;padding:20px;border-radius:10px;box-shadow:0 4px 15px #0000000d}.card small{color:#777}.card strong{display:block;font-size:25px;margin-top:8px}
+.toolbar{display:flex;gap:10px;justify-content:space-between;align-items:center;margin:25px 0;flex-wrap:wrap}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:10px;overflow:hidden}.table-wrap{overflow:auto;border-radius:10px;box-shadow:0 4px 15px #0000000d}
+th,td{text-align:left;padding:14px;border-bottom:1px solid #eee;white-space:nowrap}th{background:#111;color:#e4b51c;font-size:12px}.status{padding:6px 9px;border-radius:30px;font-size:11px;font-weight:800;display:inline-block}.paid{background:#dcfce7;color:#166534}.pending{background:#fef3c7;color:#92400e}.bad{background:#fee2e2;color:#991b1b}.muted{color:#777}
+.empty{padding:45px;text-align:center;background:#fff}.error{color:#b91c1c;margin-top:10px}
+@media(max-width:900px){.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<header class="top"><div><div class="brand">MADAME GLAMOUR FIOS</div><div class="sub">Painel de pedidos e pagamentos</div></div><button onclick="loadOrders()">↻ Atualizar</button></header>
+<main>
+<section class="login">
+  <b>🔐 Acesso administrativo</b>
+  <p class="muted">Digite o token definido no servidor em <code>ADMIN_TOKEN</code>.</p>
+  <input id="token" type="password" placeholder="Token do administrador">
+  <button class="gold" onclick="saveToken()">Entrar</button>
+  <div id="error" class="error"></div>
+</section>
+<div id="dashboard" style="display:none">
+  <div class="stats">
+    <div class="card"><small>Total de pedidos</small><strong id="total">0</strong></div>
+    <div class="card"><small>Pagos</small><strong id="paid">0</strong></div>
+    <div class="card"><small>Aguardando</small><strong id="pending">0</strong></div>
+    <div class="card"><small>Cancelados</small><strong id="cancelled">0</strong></div>
+    <div class="card"><small>Faturamento pago</small><strong id="paidValue">R$ 0,00</strong></div>
+  </div>
+  <div class="toolbar">
+    <div><b>Pedidos</b> <span class="muted">• atualização manual e via webhook</span></div>
+    <div>
+      <select id="filter" onchange="render()"><option value="all">Todos</option><option value="paid">Pagos</option><option value="pending">Não pagos</option><option value="cancelled">Cancelados</option></select>
+      <button onclick="loadOrders()">Atualizar</button>
+    </div>
+  </div>
+  <div id="table"></div>
+</div>
+</main>
+<script>
+let orders=[], stats={};
+const money=n=>Number(n||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+function saveToken(){localStorage.setItem("mgf_admin_token",document.getElementById("token").value);loadOrders();}
+async function loadOrders(){
+ const token=localStorage.getItem("mgf_admin_token")||document.getElementById("token").value;
+ if(!token){document.getElementById("error").textContent="Informe o token.";return}
+ document.getElementById("error").textContent="";
+ const r=await fetch("/api/admin/orders",{headers:{"x-admin-token":token}});
+ if(!r.ok){document.getElementById("error").textContent="Token inválido ou painel não configurado.";document.getElementById("dashboard").style.display="none";return}
+ const d=await r.json(); orders=d.orders;stats=d.stats;
+ document.getElementById("dashboard").style.display="block";
+ document.getElementById("total").textContent=stats.total;
+ document.getElementById("paid").textContent=stats.paid;
+ document.getElementById("pending").textContent=stats.pending;
+ document.getElementById("cancelled").textContent=stats.cancelled;
+ document.getElementById("paidValue").textContent=money(stats.paidValue);
+ render();
+}
+function statusLabel(s){
+ if(s==="approved")return ['Pago','paid'];
+ if(["pending","in_process","authorized"].includes(s))return ['Não pago','pending'];
+ return ['Cancelado','bad'];
+}
+function render(){
+ const f=document.getElementById("filter").value;
+ let list=orders.filter(o=>{
+   if(f==="paid")return o.status==="approved";
+   if(f==="pending")return ["pending","in_process","authorized"].includes(o.status);
+   if(f==="cancelled")return ["cancelled","rejected","refunded"].includes(o.status);
+   return true;
+ });
+ if(!list.length){document.getElementById("table").innerHTML='<div class="empty">Nenhum pedido encontrado.</div>';return}
+ document.getElementById("table").innerHTML='<div class="table-wrap"><table><thead><tr><th>Pedido</th><th>Data</th><th>Cliente</th><th>Itens</th><th>Valor</th><th>Status</th><th>Ação</th></tr></thead><tbody>'+
+ list.map(o=>{const [label,cls]=statusLabel(o.status);return `<tr>
+ <td><b>${o.id}</b></td><td>${new Date(o.createdAt).toLocaleString("pt-BR")}</td>
+ <td>${o.customerName||"—"}<br><span class="muted">${o.customerEmail||""}</span></td>
+ <td>${(o.items||[]).map(i=>`${i.quantity}x ${i.name}`).join("<br>")||"—"}</td>
+ <td><b>${money(o.amount)}</b></td><td><span class="status ${cls}">${label}</span><br><small>${o.status}</small></td>
+ <td><button onclick="sync('${o.id}')">Verificar pagamento</button></td></tr>`}).join("")+
+ '</tbody></table></div>';
+}
+async function sync(id){
+ const token=localStorage.getItem("mgf_admin_token");
+ const r=await fetch("/api/admin/orders/"+encodeURIComponent(id)+"/sync",{method:"POST",headers:{"x-admin-token":token}});
+ if(r.ok)loadOrders(); else alert("Não foi possível sincronizar este pedido.");
+}
+document.getElementById("token").value=localStorage.getItem("mgf_admin_token")||"";
+if(localStorage.getItem("mgf_admin_token"))loadOrders();
+</script>
+</body>
+</html>
